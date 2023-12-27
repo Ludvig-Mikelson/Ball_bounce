@@ -12,9 +12,13 @@ from skimage import io
 import numpy as np
 
 # Bumbiņas RGB vērtības
-b_ball = 43
-g_ball = 43
-r_ball = 162
+b_ball = 255
+g_ball = 127
+r_ball = 80
+
+range_b = range(b_ball - 1, b_ball + 1) 
+range_g = range(g_ball - 1, g_ball + 1)
+range_r = range(r_ball - 1, r_ball + 1)
 
 
 # Funkciju definēšana
@@ -28,7 +32,11 @@ def frame_rgb(frame):
 
 # Bumbiņas RGB vērtību pārbaude uz dotās y līnijas
 def rgb_in_line(y):
-    conditions = (r_ball in r[y], g_ball in g[y], b_ball in b[y])
+    conditions = (
+        any(value in range_r for value in r[y]),
+        any(value in range_g for value in g[y]),
+        any(value in range_b for value in b[y]),
+    )
     return all(conditions) 
 
 # Masas centra x koordināta
@@ -119,7 +127,7 @@ def show_frame(mc_x_coord, mc_y_coord, upper_bound, lower_bound):
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'vecteezy_animated-bouncing-ball-2d-motion-on-green-screen_6299150.mov')
+video_file_path = os.path.join(script_dir, 'ar_limenradi_3.mp4')
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
@@ -139,7 +147,6 @@ y_trajectory = []
 # Bumbiņas masas centra x un y koordinātu noteikšana katrā kadrā
 while success:
     cv2.imwrite(os.path.join(kadri_folder, "frame%d.jpg" % count), frame)
-    
     
     y_coord = 0
     x_coord = 0
