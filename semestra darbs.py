@@ -16,9 +16,9 @@ b_ball = 255
 g_ball = 127
 r_ball = 80
 
-range_b = range(b_ball - 1, b_ball + 1) 
-range_g = range(g_ball - 1, g_ball + 1)
-range_r = range(r_ball - 1, r_ball + 1)
+range_b = range(b_ball - 50, b_ball + 50) 
+range_g = range(g_ball - 50, g_ball + 50)
+range_r = range(r_ball - 50, r_ball + 50)
 
 
 # Funkciju definēšana
@@ -127,7 +127,7 @@ def show_frame(mc_x_coord, mc_y_coord, upper_bound, lower_bound):
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'ar_limenradi_3.mp4')
+video_file_path = os.path.join(script_dir, 'daudz_gaismas_2.mp4')
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
