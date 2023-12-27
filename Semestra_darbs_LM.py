@@ -25,10 +25,10 @@ except OSError:
     print('Kļūda saglabājot failu')
     
     
-while success:
-    cv2.imwrite(os.path.join(kadri_folder, "frame%d.jpg" % count), frame)
-    success, frame = vidcap.read() 
-    count += 1
+#while success:
+   # cv2.imwrite(os.path.join(kadri_folder, "frame%d.jpg" % count), frame)
+    #success, frame = vidcap.read() 
+  #  count += 1
     
 def ball_finder(image, rgb_low, rgb_high):
     pixels = []
@@ -42,10 +42,11 @@ def ball_finder(image, rgb_low, rgb_high):
 
 image_path = r'C:\Users\Deloading\Desktop\semestra\Ball_bounce\kadri\frame0.jpg'
 image = cv2.imread(image_path)
-lower_rgb = np.array([10, 30, 30])
-upper_rgb = np.array([200, 115, 150])
+image_test = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+lower_rgb = np.array([100, 100, 20])
+upper_rgb = np.array([255, 160, 70])
 
-points_ball = ball_finder(image,lower_rgb,upper_rgb)
+points_ball = ball_finder(image_test,lower_rgb,upper_rgb)
 
 
 x, y = zip(*points_ball)
@@ -56,6 +57,9 @@ fig, ax = plt.subplots()
 ax.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 ax.scatter(x, y, color='red', marker='o', s=5)
 plt.show()
+
+
+
 
 
 
