@@ -118,15 +118,17 @@ def show_frame(mc_x_coord, mc_y_coord, upper_bound, lower_bound):
     plt.show()
 
 # Video ielasīšana
-vidcap = cv2.VideoCapture(
-    'vecteezy_animated-bouncing-ball-2d-motion-on-green-screen_6299150.mov')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+video_file_path = os.path.join(script_dir, 'vecteezy_animated-bouncing-ball-2d-motion-on-green-screen_6299150.mov')
+vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
 
 # Jaunas mapes izveide
+kadri_folder = os.path.join(script_dir, 'kadri')
 try:
-    if not os.path.exists('kadri'):
-        os.makedirs('kadri')
+    if not os.path.exists(kadri_folder):
+        os.makedirs(kadri_folder)
 except OSError:
     print('Kļūda saglabājot failu')
     
@@ -136,7 +138,8 @@ y_trajectory = []
 
 # Bumbiņas masas centra x un y koordinātu noteikšana katrā kadrā
 while success:
-    cv2.imwrite("kadri//frame%d.jpg" % count, frame)     # save frame as JPEG file
+    cv2.imwrite(os.path.join(kadri_folder, "frame%d.jpg" % count), frame)
+    
     
     y_coord = 0
     x_coord = 0
@@ -161,5 +164,6 @@ while success:
 # Failu dzēšana (ja nepieciešams)
 for i in glob.glob('C://Users//Juris//Python Scripts//kadri//frame*.jpg'):
     os.remove(i)
+
 
 
