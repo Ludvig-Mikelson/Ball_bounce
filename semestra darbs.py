@@ -173,4 +173,3 @@ for i in glob.glob('C://Users//Juris//Python Scripts//kadri//frame*.jpg'):
     os.remove(i)
 
 
-
