@@ -17,11 +17,11 @@ import glob, os
 import matplotlib.pyplot as plt
 from skimage import io
 import numpy as np
-from scipy.signal import savgol_filter
+
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'daudz_gaismas_10s.mp4')
+video_file_path = os.path.join(script_dir, 'ar_limenradi_2.mp4')
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
@@ -151,29 +151,24 @@ print(Augstums)
 print(ptm)
 print(ball_movement_y[max_index]-trajectory_point_first)
 
+velocity_array = np.gradient(trajectory_points_y, real_time_set)
+acceleration_array = np.gradient(velocity_array, real_time_set)
 
 
 
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(trajectory_points_y) * ptm)
-plt.savefig("positon.pdf", format="pdf")
+plt.savefig("positon.png", format="png")
 plt.show()
-
-
-velocity_array = np.gradient(trajectory_points_y, real_time_set)
-
 
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(velocity_array) * ptm)
-plt.savefig("velocity.pdf", format="pdf")
+plt.savefig("velocity.png", format="png")
 plt.show()
-
-
-acceleration_array = np.gradient(velocity_array, real_time_set)
 
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(acceleration_array) * ptm)
-plt.savefig("acceleration.pdf", format="pdf")
+plt.savefig("acceleration.png", format="png")
 plt.show()
 
 
