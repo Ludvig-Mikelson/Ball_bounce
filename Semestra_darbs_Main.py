@@ -146,6 +146,9 @@ Augstums = (9.81*np.square(time_bounce))/2
 trajectory_points_y = [point[1] for point in trajectory_points]
 trajectory_point_first = trajectory_points_y[0]
 
+trajectory_points_x = [point[0] for point in trajectory_points]
+
+
 ptm = Augstums/(ball_movement_y[max_index]-trajectory_point_first)
 
 print(max_index)
@@ -157,6 +160,9 @@ print(ball_movement_y[max_index]-trajectory_point_first)
 
 velocity_array = np.gradient(trajectory_points_y, real_time_set)
 acceleration_array = np.gradient(velocity_array, real_time_set)
+
+velocity_array_x = np.gradient(trajectory_points_x, real_time_set)
+acceleration_array_x = np.gradient(velocity_array_x, real_time_set)
 
 
 
@@ -173,6 +179,21 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(acceleration_array) * ptm)
 plt.savefig("acceleration.png", format="png")
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set, np.array(trajectory_points_x) * ptm)
+plt.savefig("positon_x.png", format="png")
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set, np.array(velocity_array_x) * ptm)
+plt.savefig("velocity_x.png", format="png")
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set, np.array(acceleration_array_x) * ptm)
+plt.savefig("acceleration_x.png", format="png")
 plt.show()
 
 
