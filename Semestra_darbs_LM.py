@@ -17,6 +17,7 @@ import glob, os
 import matplotlib.pyplot as plt
 from skimage import io
 import numpy as np
+from scipy.signal import savgol_filter
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -47,7 +48,7 @@ def ball_finder(image, rgb_low, rgb_high):
 def ball_finder_loop(left,right,top,bot, image, rgb_low, rgb_high):
     pixels = []
     for y in range(top-40,bot+40):
-        for x in range(left-20,right+20):
+        for x in range(left-10,right+10):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
@@ -141,10 +142,38 @@ Augstums = (9.81*np.square(time_bounce))/2
 trajectory_points_y = [point[1] for point in trajectory_points]
 trajectory_point_first = trajectory_points_y[0]
 
-ptm = Augstums/(1920-trajectory_point_first)
+ptm = Augstums/(ball_movement_y[max_index]-trajectory_point_first)
+
+print(max_index)
+print(real_time_full)
+print(time_bounce)
+print(Augstums)
+print(ptm)
+print(ball_movement_y[max_index]-trajectory_point_first)
+
+
+
 
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(trajectory_points_y) * ptm)
+plt.savefig("positon.pdf", format="pdf")
+plt.show()
+
+
+velocity_array = np.gradient(trajectory_points_y, real_time_set)
+
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set, np.array(velocity_array) * ptm)
+plt.savefig("velocity.pdf", format="pdf")
+plt.show()
+
+
+acceleration_array = np.gradient(velocity_array, real_time_set)
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set, np.array(acceleration_array) * ptm)
+plt.savefig("acceleration.pdf", format="pdf")
 plt.show()
 
 
