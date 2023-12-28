@@ -21,7 +21,7 @@ import numpy as np
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'ar_limenradi_2.mp4')
+video_file_path = os.path.join(script_dir, 'daudz_gaismas.mp4')
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
@@ -45,10 +45,13 @@ def ball_finder(image, rgb_low, rgb_high):
                 pixels.append((x, y))
     return pixels
 
-def ball_finder_loop(left,right,top,bot, image, rgb_low, rgb_high):
+def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
-    for y in range(top-40,bot+40):
-        for x in range(left-10,right+10):
+    start_y = max(top - 70, 0)
+    end_y = min(bot + 70, image.shape[0] - 1)
+    
+    for y in range(start_y, end_y + 1):
+        for x in range(left - 10, right + 10):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
@@ -58,9 +61,7 @@ def center_finder(top, bot, left, right):
     center_x = left + (right - left) / 2
     center_y = top + (bot - top) / 2
     
-    
     return center_x,center_y
-
 
 lower_rgb = np.array([87, 105, 11])
 upper_rgb = np.array([255, 140, 70])
@@ -68,7 +69,6 @@ upper_rgb = np.array([255, 140, 70])
 ball_movement_y = []
 ball_movement_x =[]
 time = 0
-
 
 output_video_path = os.path.join(script_dir, 'output_video.mp4')
 fps = vidcap.get(cv2.CAP_PROP_FPS)
