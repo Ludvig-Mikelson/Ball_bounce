@@ -7,6 +7,10 @@
 #salikt framus atpakal video
 #uz video uzzimet gan masas centra trajektoriju gan visus bumbinas punktus (iztiks bez punktiem)
 #salikt kodu pec iespejas kompaktat iskatas ka visu var izdarit caur video while ciklu
+#atrast laiku per frame
+#atrast atalumu per pixel
+#atvasinat atrumu un patrinajumu
+#saglabat pdf failos
 
 import cv2
 import glob, os
@@ -57,8 +61,8 @@ def center_finder(top, bot, left, right):
     return center_x,center_y
 
 
-lower_rgb = np.array([90, 105, 10])
-upper_rgb = np.array([255, 195, 70])
+lower_rgb = np.array([87, 105, 11])
+upper_rgb = np.array([255, 140, 70])
 
 ball_movement_y = []
 ball_movement_x =[]
@@ -123,16 +127,25 @@ fig, ax = plt.subplots()
 ax.plot(np.linspace(0, time-1, time), ball_movement_y)
 plt.show()
 
-
-fps = 240
+fps = 200
 tpf = 1/fps
 
 real_time_full = time *tpf
 real_time_set = np.linspace(0,real_time_full,time)
+time_bounce = 0
+
+max_index = np.argmax(ball_movement_y)
+time_bounce = real_time_set[max_index]
+Augstums = (9.81*np.square(time_bounce))/2
+
+trajectory_points_y = [point[1] for point in trajectory_points]
+trajectory_point_first = trajectory_points_y[0]
+
+ptm = Augstums/(1920-trajectory_point_first)
 
 fig, ax = plt.subplots()
-ax.plot(real_time_set,ball_movement_y)
-plt.show
+ax.plot(real_time_set, np.array(trajectory_points_y) * ptm)
+plt.show()
 
 
 
