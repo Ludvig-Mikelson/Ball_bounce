@@ -124,7 +124,15 @@ ax.plot(np.linspace(0, time-1, time), ball_movement_y)
 plt.show()
 
 
+fps = 240
+tpf = 1/fps
 
+real_time_full = time *tpf
+real_time_set = np.linspace(0,real_time_full,time)
+
+fig, ax = plt.subplots()
+ax.plot(real_time_set,ball_movement_y)
+plt.show
 
 
 
