@@ -2,7 +2,7 @@
 """
 Created on Fri Dec 29 16:50:38 2023
 
-@author: Juris
+@author: Ludvigs, Juris
 """
 #Sadalit un saglabat video bildes
 #Atrast bumbinu caur krasas profilu
