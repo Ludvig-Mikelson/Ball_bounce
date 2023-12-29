@@ -31,7 +31,7 @@ from scipy.signal import argrelextrema
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'daudz_gaismas.mp4')
+video_file_path = os.path.join(script_dir, 'Full_speed_60fps.mp4')
 
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
@@ -52,10 +52,10 @@ def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
     
     #makes sure that ball is looked for within dimensions of image
-    end_y = min(bot + 50, image.shape[0])
+    end_y = min(bot + 150, image.shape[0])
     end_x = min(right + 20, image.shape[1])
     
-    for y in range(top -50, end_y):
+    for y in range(top -150, end_y):
         for x in range(left - 20, end_x):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
@@ -147,7 +147,7 @@ ax.plot(np.linspace(0, time-1, time), ball_movement_y)
 plt.show()
 
 #Finds time per frame given recording fps (playback fps doesn't matter)
-fps = 200
+fps = 60
 tpf = 1/fps
 
 
