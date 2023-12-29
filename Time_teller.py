@@ -8,7 +8,7 @@ import numpy as np
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'testo.mp4')
+video_file_path = os.path.join(script_dir, 'testo_1m.mp4')
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()

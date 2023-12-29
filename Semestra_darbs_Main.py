@@ -31,7 +31,7 @@ from scipy.signal import argrelextrema
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'Full_speed_60fps.mp4')
+video_file_path = os.path.join(script_dir, '60fps__1m.mp4')
 
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
@@ -52,10 +52,10 @@ def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
     
     #makes sure that ball is looked for within dimensions of image
-    end_y = min(bot + 150, image.shape[0])
+    end_y = min(bot + 250, image.shape[0])
     end_x = min(right + 20, image.shape[1])
     
-    for y in range(top -150, end_y):
+    for y in range(top -250, end_y):
         for x in range(left - 20, end_x):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
@@ -171,6 +171,7 @@ trajectory_points_x = [point[0] for point in trajectory_points]
 ptm = Augstums/(ball_movement_y[max_index]-trajectory_point_first)
 
 #Prints that can be used to 
+print(time)
 print(max_index)
 print(real_time_full)
 print(time_bounce)
