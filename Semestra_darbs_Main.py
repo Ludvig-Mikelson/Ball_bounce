@@ -21,7 +21,8 @@ import numpy as np
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
-video_file_path = os.path.join(script_dir, 'daudz_gaismas.mp4')
+video_file_path = os.path.join(script_dir, 'Untitled real.mp4')
+
 vidcap = cv2.VideoCapture(video_file_path)
 count = 0
 success, frame = vidcap.read()
@@ -48,11 +49,11 @@ def ball_finder(image, rgb_low, rgb_high):
 def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
     
-    start_y = max(top - 70, 0)
-    end_y = min(bot + 70, image.shape[0] - 1)
+    start_y = max(top - 150, 0)
+    end_y = min(bot + 150, image.shape[0] - 1)
     
     for y in range(start_y, end_y + 1):
-        for x in range(left - 10, right + 10):
+        for x in range(left - 10, right + 20):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
@@ -66,15 +67,15 @@ def center_finder(top, bot, left, right):
     return center_x,center_y
 
 
-lower_rgb = np.array([87, 105, 11])
-upper_rgb = np.array([255, 140, 70])
+lower_rgb = np.array([78, 106, 20])
+upper_rgb = np.array([255, 142, 62])
 
 ball_movement_y = []
 ball_movement_x =[]
 time = 0
 
 
-output_video_path = os.path.join(script_dir, 'output_video.mp4')
+output_video_path = os.path.join(script_dir, 'testo.mp4')
 fps = vidcap.get(cv2.CAP_PROP_FPS)
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(output_video_path, fourcc, fps, (int(vidcap.get(3)), int(vidcap.get(4))))
@@ -95,7 +96,9 @@ bot_ball = np.max(y)
 trajectory_points = []
 
 while success:
+   
     image_test = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
     points_ball = ball_finder_loop(left_ball, right_ball, top_ball, bot_ball, image_test, lower_rgb, upper_rgb)
     
     x, y = zip(*points_ball)
@@ -115,6 +118,10 @@ while success:
 
     cv2.circle(frame, (int(center_x), int(center_y)), 5, (0, 0, 255), -1)
     trajectory_points.append((int(center_x), int(center_y)))
+    
+    for point in points_ball:
+        cv2.circle(frame, point, 5, (0, 0, 255), -1)
+        
 
     for i in range(1, len(trajectory_points)):
         cv2.line(frame, trajectory_points[i - 1], trajectory_points[i], (255, 0, 0), 2)
@@ -122,6 +129,7 @@ while success:
     out.write(frame)
 
     success, frame = vidcap.read()
+    
     count += 1
 
 out.release()
