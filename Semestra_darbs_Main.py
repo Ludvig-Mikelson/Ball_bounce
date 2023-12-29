@@ -47,6 +47,7 @@ def ball_finder(image, rgb_low, rgb_high):
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
     return pixels
+
 #Using info about previous position of the ball looks for the ball in a limited area
 def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
@@ -61,6 +62,7 @@ def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
     return pixels
+
 #Finds the center coordinates given 4 points
 def center_finder(top, bot, left, right):
     center_x = left + (right - left) / 2
@@ -146,7 +148,7 @@ fig, ax = plt.subplots()
 ax.plot(np.linspace(0, time-1, time), ball_movement_y)
 plt.show()
 
-#Finds time per frame given recording fps (playback fps doesn't matter)
+#Finds time per frame given recording fps (playback fps doesn't matter, assuming that no frames are cut)
 fps = 60
 tpf = 1/fps
 
@@ -170,7 +172,7 @@ trajectory_points_x = [point[0] for point in trajectory_points]
 #Finds how many meters are per pixel
 ptm = Augstums/(ball_movement_y[max_index]-trajectory_point_first)
 
-#Prints that can be used to 
+#Prints that can be used to troubleshoot 
 print(time)
 print(max_index)
 print(real_time_full)
