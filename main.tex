@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{\textbf{Bumbiņas lēkāšana}}
+\author{
+Juris Birznieks
+\and
+Ludvigs Miķelsons
+}
+
+\date{2023. gada Decembrī}
+
+\begin{document}
+
+\maketitle
+
+\section{Darba mērķis}
+Izpētīt galda tenisa bumbiņas lēkāšanas fizikālos lielumus ar pašu veidotas datorprogrammas palīdzību.
+
+\section{Darbības pamatprincipi un algoritms}
+Video tiek ielasīts un sadalīts pa kadriem izmantojot CV2 bibliotēkas "VideoCapture" un "read" funkcijas. Tās nodrošina, ka katrs kadrs tiek ielasīts kā trīs dimensiju masīvs, kurā katram no divu dimensiju pikseļiem atbilst trīs krāsu RGB(sarkanā, zaļā un zilā) vērtības. Šajā masīvā, ieviešot Dekarta koordinātu sistēmu, kadra austumu mēs uzskatām par y asi un kadra platumu - par x asi. Šādu interpretāciju arī var viegli iegūt attēlojot masīvu ar "matplotlib" palīdzību: kadrs tiek parādīts ar y asi gar kreiso malu un x asi gar attēla apakšmalu. X asij nulles punkts ir attēla kreisajā apakšējā stūrī, bet y asij - kreisajā augšējā. Tātad jebkura pikseļa vai punkta y koordinātas var uzzināt skaitot no kadra augšējās malas. Bumbiņas krišanas virziens un arī gravitācijas paātrinājuma virziens ir y ass pozitīvajā virzienā, kas ir uz leju.
+
+Pirmajā kadrā bumbiņa tiek maklēta pa visu attēlu izmantojot funkciju "ball_finder". Šī funkcija iterē cauri visām attēla masīva "frame" RGB vērtībām katrā punktā ar koordinātām x un y ar divu "for" ciklu palīdzību,   un pārbauda pikseļa atbilstību manuāli ievadītajam RGB vērtību intervālam, kas atrodas masīvos "lower_rgb" un "upper_rgb" un kas aptuveni atbilst RGB vērtībām kadra laukumam, kurā ir attēlota bumbiņa. Šī funkcija atgriež visus pikseļus jeb punktus, kas atrodas manuāli ievadītajā intervālā. Teorētiski tiem ir jābūt uz bumbiņas, bet praksē ne vienmēr tā notiek. Pareizo RGB intervāla robežu meklēšanas procesā, bija daudz gadījumu, kad funkcija atgrieza punktus, kas kadrā neatrodas uz bumbiņas.
+
+Pēc visu pareizo punktu atrašanas, tiek iegūti maksimālie un minimālie punkti, kas teorētiski atbilst bumbiņas malām - y ass: augšējā un apakšējā; x ass: kreisā un labā. 
+
+Turpmāk šīs vērtības tiek izmantotas analizējot nākamos kadrus, lai ierobežotu meklēšanas laukumu kadrā, tādā veidā samazinot meklēšanas laiku un palielinot programmas ātrumu. Kadru analīze tiek veikta izmantojot funkciju "ball_finder_loop", kas iterē cauri visām pikseļu vērtībām līdzīgi, kā "ball_finder", tikai šoreiz izmantojot mazāku kadra laukumu, ko nosaka atrastajām bumbiņas malu vērtībām attiecīgi pieskaitot un atņemot vēl 70 pikseļus, lai ietvertu laukumu, kurā bumbiņa visticamāk varētu atrasties, ņemot vērā iepriekšējā kadra atrašanās vietu. Lai novērstu pikseļu vērtību meklēšanu ārpus kadra robežām, pārbaudāmā laukuma apakšējās vērtības "end_y" definēšanā tiek izmantota funkcija "shape", kas atgriež kadra garumu. Gadījumā, ja meklēšanas intervālu robežas iziet ārpus kadra robežām, kā intervāla apakšējā robeža tiek pieņemta kadra apakšējā robeža.
+
+Maksimālās un minimālās x un y vērtības arī tiek padotas uz funkciju "center_finder", kas aprēķina vidējo vērtību un atgriež bumbiņas masas centra aptuvenās koordinātas.
+
+Masas centrs (punkts sarkanā krāsā) un trajektorijas līnija(zilā krāsā) uz katra kadra tiek aprēķināti ar CV2 bibliotēkas funkcijām "cv2.Circle" un "cv2.line", un attēloti ar funkciju "write". Trajektorijas līnijas punkti tiek iegūti ar "for" cikla palīdzību, izmantojot iepriekšējo kadru punktus, kas ar katru kadru saglabājas masīvā "trajectory_points".
+
+Funkcija "ball_finder_loop", masas centra un trajektorijas atrašana ir ievietotas "while" ciklā, kas ar katru iterāciju apstrādā jaunu kadru.
+
+Lai būtu iespējams attēlot darbā prasītos grafikus, jāspēj atrast laiks $t$ no bumbiņas kustības sākuma momenta un pikseļi jāpielīdzina reālām SI sistēmas mērvienībām, ko var izdarīt aprēķinot cik daudz ir viens pikselis metros.
+Laiku $t$ var noteikt zinot filmēšanas kadru daudzumu sekundē (FPS). Laiks uz katru kadru (TPF) būs $frac{1}{FPS}$.
+Sareizinot šo laiku ar video kadru daudzumu, iegūstam bumbiņas kustības kopējo reālo laiku. Tas ir svarīgi, jo daudzos no mūsu uzņemtajiem video atskaņošanas laiks un reālais bumbiņas kustības laiks atšķirās, tāpēc, ka šie video tika uzņemti izmantojot kameras lēnās kustībās funkciju (slow-motion).
+Tālāk, katram kadram atbilstošais reālais laiks tiek saglabāts masīvā "real_time_set". Šajā masīvā atrodot vērtību ar indeksu, kas atbilst kustības trajektorijas punktam ar maksimālo vērtību, kas savukārt atbilst laika momentam, kad bumbiņa atsitās pret zemi. 
+Ievietojot šo laiku kinemātikas vienādojumā
+
+\begin{equation}
+    y(t)=\frac{gt^2}{2} [m],
+\end{equation}
+
+ iegūstam reālo augstumu $h$, no kura tika izmesta bumbiņa.
+ Reālais augstums, protams, neatbilst y vērtībām kadrā, jo vietas, kur bumbiņa tiek atlaista un kur bumbiņa atsitās, precīzi nesakrīt ar kadra apakšējo malu. 
+ Lai atrastu lielumu, kas atbilst viena pikseļa garumam metros reālais augstums tiek dalīts ar trajektorijas masīva lielāko vērtību t.i. trajektorijas zemākā punkta un trajektorijas sākuma punkta starpību, pēc formulas:
+
+ \begin{equation}
+     h_{piksela}=\frac{h_{reālais}}{h_{min}-h{max}}
+ \end{equation}
+
+ Ar katram kadram aprēķinātā atbilstošā laika $t$ un pikseļa garuma palīdzību ir iespējams attēlot bumbiņas masas centra pārvietojuma grafikus atkarībā no laika x un y virzienos.
+ Tālāk, attiecīgi atvasinot izmantojot Numpy bibliotēkas funkciju gradient, ieguvām bumbiņas ātruma $v$ un paātrinājuma $a$ grafikus.
+
+ 
+ 
+\end{document}

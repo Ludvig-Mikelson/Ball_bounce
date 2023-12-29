@@ -1,3 +1,26 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec 29 16:50:38 2023
+
+@author: Juris
+"""
+
+#Sadalit un saglabat video bildes
+#Atrast bumbinu caur krasas profilu
+#Atrast apmeram bumbinas masas centru caur x liniju un y liniju 
+#ielikt visu programu zem viena cikla
+#arpus cikla apstradat pilnu atelu
+#zem cikla apstradat tikai atelu kas ir robezas ap bumbu
+#salikt framus atpakal video
+#uz video uzzimet gan masas centra trajektoriju gan visus bumbinas punktus (iztiks bez punktiem)
+#salikt kodu pec iespejas kompaktat iskatas ka visu var izdarit caur video while ciklu
+#atrast laiku per frame
+#atrast atalumu per pixel
+#atvasinat atrumu un patrinajumu
+#saglabat pdf failos
+#sagriezt video lai bumba tiek uzreiz atlaista
+#
+
 #Sadalit un saglabat video bildes
 #Atrast bumbinu caur krasas profilu
 #Atrast apmeram bumbinas masas centru caur x liniju un y liniju 
@@ -177,7 +200,7 @@ acceleration_array = np.gradient(velocity_array, real_time_set)
 velocity_array_x = np.gradient(trajectory_points_x, real_time_set)
 acceleration_array_x = np.gradient(velocity_array_x, real_time_set)
 
-
+#%%
 
 #%%
 
@@ -230,9 +253,3 @@ plt.xlabel('$t, s$')
 plt.ylabel('$a_x, m/s^2$')
 plt.show()
 
-
-
-
-
-        
-    
