@@ -52,11 +52,11 @@ def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
     
     #makes sure that ball is looked for within dimensions of image
-    end_y = min(bot + 80, image.shape[0])
-    end_x = min(right + 10, image.shape[1])
+    end_y = min(bot + 50, image.shape[0])
+    end_x = min(right + 20, image.shape[1])
     
     for y in range(top -50, end_y):
-        for x in range(left - 10, end_x):
+        for x in range(left - 20, end_x):
             pixel = image[y, x]
             if np.all(rgb_low <= pixel) and np.all(pixel <= rgb_high):
                 pixels.append((x, y))
@@ -69,7 +69,7 @@ def center_finder(top, bot, left, right):
     return center_x,center_y
 
 #RGB range for ball finder fucntions 
-lower_rgb = np.array([167, 10, 10])
+lower_rgb = np.array([160, 10, 10])
 upper_rgb = np.array([255, 150, 80])
 
 ball_movement_y = []
@@ -151,7 +151,7 @@ fps = 200
 tpf = 1/fps
 
 
-real_time_full = time *tpf
+real_time_full = time * tpf
 real_time_set = np.linspace(0,real_time_full,time)
 time_bounce = 0
 
@@ -186,11 +186,14 @@ acceleration_array_x = np.gradient(velocity_array_x, real_time_set)
 
 #%%
 
+pixels_height = (ball_movement_y[max_index] - trajectory_point_first) * ptm
+formatted_result = "{:.1f}".format(result)
+
 #Plots and converts from pixels to meters
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(trajectory_points_y) * ptm)
 plt.savefig("positon.png", format="png")
-plt.title('Atrašanās vieta $y(t)$')
+plt.title('Atrašanās vieta $y(t)$' + "Release Height - " + str(ball_movement_y[max_index]-trajectory_point_first*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$y, m$')
 plt.show()
@@ -198,7 +201,7 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(velocity_array) * ptm)
 plt.savefig("velocity.png", format="png")
-plt.title('Ātrums $v_y(t)$')
+plt.title('Ātrums $v_y(t)$' + "Release Height - " + str((ball_movement_y[max_index]-trajectory_point_first)*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$v_y, m/s$')
 plt.show()
@@ -206,7 +209,7 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(acceleration_array) * ptm)
 plt.savefig("acceleration.png", format="png")
-plt.title('Paātrinājums $a_y(t)$')
+plt.title('Paātrinājums $a_y(t)$' + "Release Height - " + str(ball_movement_y[max_index]-trajectory_point_first*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$a_y, m/s^2$')
 plt.show()
@@ -214,7 +217,7 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(trajectory_points_x) * ptm)
 plt.savefig("positon_x.png", format="png")
-plt.title('Atrašanās vieta $x(t)$')
+plt.title('Atrašanās vieta $x(t)$' + "Release Height - " + str(ball_movement_y[max_index]-trajectory_point_first*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$x, m$')
 plt.show()
@@ -222,7 +225,7 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(velocity_array_x) * ptm)
 plt.savefig("velocity_x.png", format="png")
-plt.title('Ātrums x virzienā $v_x(t)$')
+plt.title('Ātrums x virzienā $v_x(t)$' + "Release Height - " + str(ball_movement_y[max_index]-trajectory_point_first*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$v_x, m/s$')
 plt.show()
@@ -230,7 +233,7 @@ plt.show()
 fig, ax = plt.subplots()
 ax.plot(real_time_set, np.array(acceleration_array_x) * ptm)
 plt.savefig("acceleration_x.png", format="png")
-plt.title('Paātrinājums x virzienā $a_x(t)$')
+plt.title('Paātrinājums x virzienā $a_x(t)$' + "Release Height - " + str(ball_movement_y[max_index]-trajectory_point_first*ptm) + "Recording FPS = " + str(fps))
 plt.xlabel('$t, s$')
 plt.ylabel('$a_x, m/s^2$')
 plt.show()
