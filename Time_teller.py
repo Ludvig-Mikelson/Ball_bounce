@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from skimage import io
 import numpy as np
 
-
+#kods beigas netika izmantots galvenajam merkim, bet nodereja lai sadalitu video pa kadriem un idenficetu problemas un noteiktu video
+#uznemsanas fps.
 
 # Video ielasīšana
 script_dir = os.path.dirname(os.path.abspath(__file__))
