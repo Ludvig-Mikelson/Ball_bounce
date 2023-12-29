@@ -11,6 +11,8 @@
 #atrast atalumu per pixel
 #atvasinat atrumu un patrinajumu
 #saglabat pdf failos
+#sagriezt video lai bumba tiek uzreiz atlaista
+#
 
 import cv2
 import glob, os
@@ -49,8 +51,8 @@ def ball_finder(image, rgb_low, rgb_high):
 def ball_finder_loop(left, right, top, bot, image, rgb_low, rgb_high):
     pixels = []
     
-    start_y = max(top - 150, 0)
-    end_y = min(bot + 150, image.shape[0] - 1)
+    start_y = max(top - 100, 0)
+    end_y = min(bot + 100, image.shape[0] - 1)
     
     for y in range(start_y, end_y + 1):
         for x in range(left - 10, right + 20):
@@ -63,12 +65,11 @@ def center_finder(top, bot, left, right):
     center_x = left + (right - left) / 2
     center_y = top + (bot - top) / 2
     
-    
     return center_x,center_y
 
 
-lower_rgb = np.array([78, 106, 20])
-upper_rgb = np.array([255, 142, 62])
+lower_rgb = np.array([161, 41, 11])
+upper_rgb = np.array([255, 150, 80])
 
 ball_movement_y = []
 ball_movement_x =[]
